@@ -3,7 +3,7 @@ import { Ship } from "./index";
 // Ship object test fixture
 function shipTestFixture(length, hits) {
   const shipInstance = Ship(length);
-  for (let i = 0; i < hits.length; i++) {
+  for (let i = 0; i < hits; i++) {
     shipInstance.hit();
   }
   return shipInstance;
@@ -25,7 +25,7 @@ test("test several hits on a long ship that should sink", () => {
   // Define testing variables
   const length = 3;
   const hits = 3;
-  const shipInstance = shipFixture(length, hits);
+  const shipInstance = shipTestFixture(length, hits);
 
   // Perform test
   expect(shipInstance.isSunk()).toBe(true);
