@@ -1,4 +1,4 @@
-import { Ship, GameBoard } from "./index";
+import { Ship, GameBoard } from "./index.js";
 
 // Ship object test fixture
 function shipTestFixture(length, hits) {
@@ -11,7 +11,7 @@ function shipTestFixture(length, hits) {
 // Ship Methods to be tested (related to object public interface)
 // hit() method: Outgoing command method (called from outside the object to change the state of the object)
 // isSunk() method: incoming query method (called from outside the object to return and receive information on the state of the object)
-test.skip("test a hit on a long ship that should not sink", () => {
+test("test a hit on a long ship that should not sink", () => {
   // Define testing variables
   const length = 3;
   const hits = 1;
@@ -21,7 +21,7 @@ test.skip("test a hit on a long ship that should not sink", () => {
   expect(shipInstance.isSunk()).toBe(false);
 });
 
-test.skip("test several hits on a long ship that should sink", () => {
+test("test several hits on a long ship that should sink", () => {
   // Define testing variables
   const length = 3;
   const hits = 3;
@@ -62,7 +62,7 @@ function gameBoardFixture(
     patrolBoatCoordinates,
   ];
 
-  const testHits = 0;
+  let testHits = 0;
 
   loopBeginning: for (let i = 0; i < allShipCoordinates.length; i++) {
     for (let j = 0; j < allShipCoordinates[i].length; j++) {
