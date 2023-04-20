@@ -116,3 +116,19 @@ test("hit all battle ships on the board, which should end the game", () => {
   // Perform test
   expect(gameBoardInstance.areShipsSunk()).toBe(true);
 });
+
+// Player Methods to be tested (related to object public interface)
+// There is a player, and a "computer"
+// Player needs to:
+// - Be able to attack the enemy game board
+// - Have its turn represented as a boolean (with getter and setter)
+// When creating a player, an argument should be sent to have the factory determine whether the new player
+// should be a human or a computer
+// Tests:
+// - Test if player correctly hits a ship by placing a ship on a Gameboard at a certain position
+//.. (I should add a feature to the gameBoard where an attack is performed, to return the status of the hit)
+// - Test if player hits all spaces of a ship and see if the ship is sunk or not
+// - Test if a player misses a ship
+// - Test if player AI makes legal moves
+// - Test player turns (have starting player make a shot, update its turn, then test if players turn
+//.. status is correct)
