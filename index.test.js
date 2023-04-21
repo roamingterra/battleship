@@ -135,7 +135,7 @@ test("player correctly hits ship", () => {
   expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("hit");
 });
 
-test.skip("player sinks ship", () => {
+test("player sinks ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -152,7 +152,7 @@ test.skip("player sinks ship", () => {
   }
 });
 
-test.skip("player misses", () => {
+test("player misses", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
