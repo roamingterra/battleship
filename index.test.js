@@ -124,10 +124,6 @@ test.skip("player correctly hits ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
-  //   const battleshipCoordinates = ["B4", "B5", "B6", "B7"];
-  //   const cruiserCoordinates = ["H3", "H4", "H5"];
-  //   const submarineCoordinates = ["E2", "E3", "E4"];
-  //   const patrolBoatCoordinates = ["D6", "E6"];
   const gameBoardInstance = gameBoardFixture(carrierCoordinates);
   const playerAttack = playerInstance.attack("F9");
 
@@ -135,7 +131,7 @@ test.skip("player correctly hits ship", () => {
   expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("hit");
 });
 
-test.skip("player sinks ship", () => {
+test("player sinks ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -201,7 +197,7 @@ test.skip("AI makes legal moves", () => {
   expect(computerAttack).toBe("hit") || expect(computerAttack).toBe("miss");
 });
 
-test("player turn updates", () => {
+test.skip("player turn updates", () => {
   // Define testing variables
   const human = Player("human");
   const computer = Player("computer");

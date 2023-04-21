@@ -110,6 +110,26 @@ function GameBoard(
 
 function Player(playerType) {
   let turn = false;
+  let attack;
+  if (playerType === "human") {
+    attack = function (attackCoordinate) {
+      return attackCoordinate;
+    };
+  }
+  // 1. AI should randomly produce a coordinate to attack
+  // 2. AI should record all previous hits, and only produce a coordinate to attack based on the
+  // .. remaining spaces
+  // 3. AI should prioritize attacking spaces adjacent to successful hits
+  // NOTE: The AI will maintain a list of legal moves. When a move is made, it is subsequently removed
+  // .. from the list of legal moves. If a successful move is made, it should randomly select an adjacent
+  // .. move based on a 2D array representing the board that it will have access to. While this is
+  // .. happening, it will maintain a list of hit spaces for the currently targeted ship. When a hit is
+  // .. made, it will check to see if the ship has sunk. If not, it will add the previously hit
+  // .. space to the targetedShip array. Once there are two spaces in the targetedShip array, and the
+  // .. ship is still not sunk, the AI will prioritize attacking spaces in one direction. Once the ship
+  // .. is confirmed to be destroyed, the targetedShip array will be emptied.
+  if (playerType === "computer") {
+  }
   return {
     getTurn: function () {
       return turn;
@@ -117,9 +137,7 @@ function Player(playerType) {
     setTurn: function (booleanValue) {
       turn = booleanValue;
     },
-    attack: function (attackCoordinate) {
-      return attackCoordinate;
-    },
+    attack: attack,
   };
 }
 
