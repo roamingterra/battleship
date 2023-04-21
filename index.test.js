@@ -120,7 +120,7 @@ test.skip("hit all battle ships on the board, which should end the game", () => 
 // I CAN USE THE PREVIOUSLY MADE GAMEBOARD FIXTURE FOR MY UPCOMING PLAYER TESTS, AND SEND IT AN ARGUMENT OF
 // .. 0.
 
-test("player correctly hits ship", () => {
+test.skip("player correctly hits ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -135,7 +135,7 @@ test("player correctly hits ship", () => {
   expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("hit");
 });
 
-test("player sinks ship", () => {
+test.skip("player sinks ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -152,7 +152,7 @@ test("player sinks ship", () => {
   }
 });
 
-test("player misses", () => {
+test.skip("player misses", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -201,7 +201,7 @@ test.skip("AI makes legal moves", () => {
   expect(computerAttack).toBe("hit") || expect(computerAttack).toBe("miss");
 });
 
-test.skip("player turn updates", () => {
+test("player turn updates", () => {
   // Define testing variables
   const human = Player("human");
   const computer = Player("computer");

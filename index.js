@@ -109,7 +109,14 @@ function GameBoard(
 }
 
 function Player(playerType) {
+  let turn = false;
   return {
+    getTurn: function () {
+      return turn;
+    },
+    setTurn: function (booleanValue) {
+      turn = booleanValue;
+    },
     attack: function (attackCoordinate) {
       return attackCoordinate;
     },
