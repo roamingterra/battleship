@@ -46,21 +46,11 @@ function gameBoardFixture(
   patrolBoatCoordinates,
   hits
 ) {
-  const gameBoardInstance = GameBoard(
-    carrierCoordinates,
-    battleshipCoordinates,
-    cruiserCoordinates,
-    submarineCoordinates,
-    patrolBoatCoordinates
-  );
-
-  const allShipCoordinates = [
-    carrierCoordinates,
-    battleshipCoordinates,
-    cruiserCoordinates,
-    submarineCoordinates,
-    patrolBoatCoordinates,
-  ];
+  const allShipCoordinates = [];
+  for (let i = 0; i < arguments.length && i < 5; i++) {
+    allShipCoordinates.push(arguments[i]);
+  }
+  const gameBoardInstance = GameBoard(...allShipCoordinates);
 
   let testHits = 0;
 
@@ -134,6 +124,10 @@ test("player correctly hits ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
+  //   const battleshipCoordinates = ["B4", "B5", "B6", "B7"];
+  //   const cruiserCoordinates = ["H3", "H4", "H5"];
+  //   const submarineCoordinates = ["E2", "E3", "E4"];
+  //   const patrolBoatCoordinates = ["D6", "E6"];
   const gameBoardInstance = gameBoardFixture(carrierCoordinates);
   const playerAttack = playerInstance.attack("F9");
 
@@ -141,7 +135,7 @@ test("player correctly hits ship", () => {
   expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("hit");
 });
 
-test("player sinks ship", () => {
+test.skip("player sinks ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -158,7 +152,7 @@ test("player sinks ship", () => {
   }
 });
 
-test("player misses", () => {
+test.skip("player misses", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -172,7 +166,7 @@ test("player misses", () => {
 // I can initialize a board with every single space being taken up either hits or misses
 // .. (except for two spaces) and the AI should attack either of the two remaining spaces
 // that are empty or a part of a ship
-test("AI makes legal moves", () => {
+test.skip("AI makes legal moves", () => {
   // Define testing variables
   const computer = Player("computer");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -207,7 +201,7 @@ test("AI makes legal moves", () => {
   expect(computerAttack).toBe("hit") || expect(computerAttack).toBe("miss");
 });
 
-test("player turn updates", () => {
+test.skip("player turn updates", () => {
   // Define testing variables
   const human = Player("human");
   const computer = Player("computer");

@@ -30,14 +30,10 @@ function GameBoard(
     }
   }
 
-  const shipCoordinates = [
-    carrierCoordinates,
-    battleshipCoordinates,
-    cruiserCoordinates,
-    submarineCoordinates,
-    patrolBoatCoordinates,
-  ];
-
+  const shipCoordinates = [];
+  for (let i = 0; i < arguments.length && i < 5; i++) {
+    shipCoordinates.push(arguments[i]);
+  }
   const shipNames = [
     "carrier",
     "battleship",
@@ -112,4 +108,12 @@ function GameBoard(
   };
 }
 
-export { Ship, GameBoard };
+function Player(playerType) {
+  return {
+    attack: function (attackCoordinate) {
+      return attackCoordinate;
+    },
+  };
+}
+
+export { Ship, GameBoard, Player };
