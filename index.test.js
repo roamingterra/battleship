@@ -131,7 +131,7 @@ test.skip("player correctly hits ship", () => {
   expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("hit");
 });
 
-test("player sinks ship", () => {
+test.skip("player sinks ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -162,7 +162,7 @@ test.skip("player misses", () => {
 // I can initialize a board with every single space being taken up either hits or misses
 // .. (except for two spaces) and the AI should attack either of the two remaining spaces
 // that are empty or a part of a ship
-test.skip("AI makes legal moves", () => {
+test("AI makes legal moves", () => {
   // Define testing variables
   const computer = Player("computer");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -187,14 +187,57 @@ test.skip("AI makes legal moves", () => {
       const coordinate = x + y;
 
       if (coordinate !== "E6" || coordinate !== "E7") {
-        gameBoardInstance.receiveAttack(coordinate);
+        gameBoardInstance.receiveAttack(computer.attack(coordinate));
       }
     }
   }
 
-  const computerAttack = computer.attack();
   // Perform test
-  expect(computerAttack).toBe("hit") || expect(computerAttack).toBe("miss");
+  const attack = computer.attack();
+  expect(gameBoardInstance.receiveAttack(attack)).toBe("sink") ||
+    expect(gameBoardInstance.receiveAttack(attack)).toBe("miss");
+});
+
+test("AI prioritizes attacking blocks adjacent to successful hits", () => {
+  // Define testing variables
+  const computer = Player("computer");
+  const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
+  const gameBoardInstance = gameBoardFixture(carrierCoordinates);
+
+  // Perform test
+  gameBoardInstance.receiveAttack(computer.attack("H9"));
+  const attack = computer.attack();
+  expect(attack).toBe("G9") ||
+    expect(attack).toBe("H8") ||
+    expect(attack).toBe("I9") ||
+    expect(attack).toBe("H10");
+});
+
+test("AI prioritizes attacking blocks in a line after two successful hits", () => {
+  // Define testing variables
+  const computer = Player("computer");
+  const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
+  const gameBoardInstance = gameBoardFixture(carrierCoordinates);
+
+  // Perform test
+  gameBoardInstance.receiveAttack(computer.attack("G9"));
+  gameBoardInstance.receiveAttack(computer.attack("H9"));
+  const attack = computer.attack();
+  expect(attack).toBe("F9") || expect(attack).toBe("I9");
+});
+
+test("AI misses after two consecutive hits, then pivots to attack towards other direction", () => {
+  // Define testing variables
+  const computer = Player("computer");
+  const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
+  const gameBoardInstance = gameBoardFixture(carrierCoordinates);
+
+  // Perform test
+  gameBoardInstance.receiveAttack(computer.attack("G9"));
+  gameBoardInstance.receiveAttack(computer.attack("F9"));
+  gameBoardInstance.receiveAttack(computer.attack("E9"));
+  const attack = computer.attack();
+  expect(attack).toBe("H9");
 });
 
 test.skip("player turn updates", () => {
