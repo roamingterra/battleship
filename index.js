@@ -1,3 +1,5 @@
+import { MultiStats } from "webpack";
+
 function Ship(length, name) {
   let hitsTaken = 0;
   return {
@@ -82,8 +84,10 @@ function GameBoard(
       const regex2 = /[1-9]|10/;
       const x = coordinate.match(regex1)[0].charCodeAt(0) - 65;
       const y = coordinate.match(regex2)[0] - 1;
-      if (board[x][y] === "empty") board[x][y] = "miss";
-      else if (
+      if (board[x][y] === "empty") {
+        board[x][y] = "miss";
+        return "miss";
+      } else if (
         board[x][y] !== "empty" ||
         board[x][y] !== "miss" ||
         board[x][y] !== "hit"
@@ -93,6 +97,8 @@ function GameBoard(
         ships[shipName].hit();
         // Replace hit ship in board with "hit"
         board[x][y] = "hit";
+        if (ships[shipName].isSunk()) return "sink";
+        return "hit";
       }
     },
     areShipsSunk: function () {

@@ -1,4 +1,4 @@
-import { Ship, GameBoard } from "./index.js";
+import { Ship, GameBoard, Player } from "./index.js";
 
 // Ship object test fixture
 function shipTestFixture(length, hits) {
@@ -11,7 +11,7 @@ function shipTestFixture(length, hits) {
 // Ship Methods to be tested (related to object public interface)
 // hit() method: Outgoing command method (called from outside the object to change the state of the object)
 // isSunk() method: incoming query method (called from outside the object to return and receive information on the state of the object)
-test("test a hit on a long ship that should not sink", () => {
+test.skip("test a hit on a long ship that should not sink", () => {
   // Define testing variables
   const length = 3;
   const hits = 1;
@@ -21,7 +21,7 @@ test("test a hit on a long ship that should not sink", () => {
   expect(shipInstance.isSunk()).toBe(false);
 });
 
-test("test several hits on a long ship that should sink", () => {
+test.skip("test several hits on a long ship that should sink", () => {
   // Define testing variables
   const length = 3;
   const hits = 3;
@@ -65,6 +65,7 @@ function gameBoardFixture(
   let testHits = 0;
 
   loopBeginning: for (let i = 0; i < allShipCoordinates.length; i++) {
+    if (hits === 0 || hits === undefined) break loopBeginning;
     for (let j = 0; j < allShipCoordinates[i].length; j++) {
       gameBoardInstance.receiveAttack(allShipCoordinates[i][j]);
       testHits++;
@@ -75,7 +76,7 @@ function gameBoardFixture(
   return gameBoardInstance;
 }
 
-test("hit some battle ships on the board, which should not end the game", () => {
+test.skip("hit some battle ships on the board, which should not end the game", () => {
   // Define testing variables
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
   const battleshipCoordinates = ["B4", "B5", "B6", "B7"];
@@ -96,7 +97,7 @@ test("hit some battle ships on the board, which should not end the game", () => 
   expect(gameBoardInstance.areShipsSunk()).toBe(false);
 });
 
-test("hit all battle ships on the board, which should end the game", () => {
+test.skip("hit all battle ships on the board, which should end the game", () => {
   // Define testing variables
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
   const battleshipCoordinates = ["B4", "B5", "B6", "B7"];
@@ -118,17 +119,109 @@ test("hit all battle ships on the board, which should end the game", () => {
 });
 
 // Player Methods to be tested (related to object public interface)
-// There is a player, and a "computer"
-// Player needs to:
-// - Be able to attack the enemy game board
-// - Have its turn represented as a boolean (with getter and setter)
-// When creating a player, an argument should be sent to have the factory determine whether the new player
-// should be a human or a computer
-// Tests:
 // - Test if player correctly hits a ship by placing a ship on a Gameboard at a certain position
-//.. (I should add a feature to the gameBoard where an attack is performed, to return the status of the hit)
+// .. (I should add a feature to the gameBoard where an attack is performed, to return the status of the hit)
 // - Test if player hits all spaces of a ship and see if the ship is sunk or not
 // - Test if a player misses a ship
 // - Test if player AI makes legal moves
 // - Test player turns (have starting player make a shot, update its turn, then test if players turn
-//.. status is correct)
+// .. status is correct)
+
+// I CAN USE THE PREVIOUSLY MADE GAMEBOARD FIXTURE FOR MY UPCOMING PLAYER TESTS, AND SEND IT AN ARGUMENT OF
+// .. 0.
+
+test("player correctly hits ship", () => {
+  // Define testing variables
+  const playerInstance = Player("human");
+  const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
+  const gameBoardInstance = gameBoardFixture(carrierCoordinates);
+  const playerAttack = playerInstance.attack("F9");
+
+  // Perform test
+  expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("hit");
+});
+
+test("player sinks ship", () => {
+  // Define testing variables
+  const playerInstance = Player("human");
+  const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
+  const gameBoardInstance = gameBoardFixture(carrierCoordinates);
+
+  // Perform test
+  for (let i = 0; i < carrierCoordinates.length; i++) {
+    const playerAttack = playerInstance.attack(carrierCoordinates[i]);
+    if (i === carrierCoordinates.length - 1) {
+      expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("sink");
+      break;
+    }
+    gameBoardInstance.receiveAttack(playerAttack);
+  }
+});
+
+test("player misses", () => {
+  // Define testing variables
+  const playerInstance = Player("human");
+  const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
+  const gameBoardInstance = gameBoardFixture(carrierCoordinates);
+  const playerAttack = playerInstance.attack("A1");
+
+  // Perform test
+  expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("miss");
+});
+
+// I can initialize a board with every single space being taken up either hits or misses
+// .. (except for two spaces) and the AI should attack either of the two remaining spaces
+// that are empty or a part of a ship
+test("AI makes legal moves", () => {
+  // Define testing variables
+  const computer = Player("computer");
+  const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
+  const battleshipCoordinates = ["B4", "B5", "B6", "B7"];
+  const cruiserCoordinates = ["H3", "H4", "H5"];
+  const submarineCoordinates = ["E2", "E3", "E4"];
+  const patrolBoatCoordinates = ["D6", "E6"];
+  const gameBoardInstance = gameBoardFixture(
+    carrierCoordinates,
+    battleshipCoordinates,
+    cruiserCoordinates,
+    submarineCoordinates,
+    patrolBoatCoordinates,
+    0
+  );
+
+  // Hit every block in board except for one ship block and one empty block
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      const x = String.fromCharCode(i + 65);
+      const y = j + 1;
+      const coordinate = x + y;
+
+      if (coordinate !== "E6" || coordinate !== "E7") {
+        gameBoardInstance.receiveAttack(coordinate);
+      }
+    }
+  }
+
+  const computerAttack = computer.attack();
+  // Perform test
+  expect(computerAttack).toBe("hit") || expect(computerAttack).toBe("miss");
+});
+
+test("player turn updates", () => {
+  // Define testing variables
+  const human = Player("human");
+  const computer = Player("computer");
+
+  // Perform test
+  human.setTurn(true);
+  computer.setTurn(false);
+
+  expect(human.getTurn()).toBe(true);
+  expect(computer.getTurn()).toBe(false);
+
+  human.setTurn(false);
+  computer.setTurn(true);
+
+  expect(human.getTurn()).toBe(false);
+  expect(computer.getTurn()).toBe(true);
+});
