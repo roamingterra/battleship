@@ -198,6 +198,53 @@ function Player(playerType) {
         // if targetedShip array is greater than 1, get a coordinate on the same line as those
         // .. recorded coordinates and is adjacent to either of the recorded coordinates in the
         // .. targetedShip array
+        else if (targetedShip.length > 1) {
+          const regex1 = /[A-J]/i;
+          const regex2 = /[1-9]|10/;
+          // Record all targeted ship coordinates in array form
+          const xCoordinates = [];
+          const yCoordinates = [];
+          for (let i = 0; i < targetedShip.length; i++) {
+            xCoordinates.push(
+              targetedShip[0].match(regex1)[0].charCodeAt(0) - 65
+            );
+            yCoordinates.push(targetedShip[0].match(regex2)[0] - 1);
+          }
+          // Establish line of attack
+          const allEqual = (arr) => arr.every((v) => v === arr[0]);
+          const xCoordinatesAllEqual = allEqual(xCoordinates); // Either true or false
+          const yCoordinatesAllEqual = allEqual(yCoordinates); // Either true or false
+          // Record all possible moves
+          const possibleMoves = [];
+          for (let i = 0; i < targetedShip.length; i++) {
+            const x = xCoordinates[i];
+            const y = yCoordinates[i];
+            if (xCoordinatesAllEqual) {
+              possibleMoves.push(board[x][y + 1]);
+              possibleMoves.push(board[x][y - 1]);
+            } else if (yCoordinatesAllEqual) {
+              possibleMoves.push(board[x + 1][y]);
+              possibleMoves.push(board[x - 1][y]);
+            }
+          }
+          // Remove possible adjacent move if not possible
+          for (let i = 0; i < possibleMoves.length; i++) {
+            if (possibleMoves[i] === undefined) possibleMoves.splice(i, 1);
+            let isLegal = false;
+            legalMoveCheck: for (let j = 0; j < legalMoves.length; j++) {
+              if (possibleMoves[i] === legalMoves[j]) {
+                isLegal = true;
+                break legalMoveCheck;
+              }
+            }
+            if (isLegal === false) possibleMoves.splice(i, 1);
+          }
+          // Choose random move from list of possible moves
+          attackCoordinate =
+            possibleMoves[
+              Math.floor(Math.random() * (possibleMoves.length + 1))
+            ];
+        }
         // else, get random block from legalMoves array
         else {
           attackCoordinate =
