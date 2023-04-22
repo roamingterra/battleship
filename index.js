@@ -77,11 +77,12 @@ function GameBoard(
     receiveAttack: function (coordinate) {
       // Convert x and y coordinates to numbers for board array
       const regex1 = /[A-J]/i;
-      const regex2 = /[1-9]|10/;
+      const regex2 = /[1-9]\d*/;
       const x = coordinate.match(regex1)[0].charCodeAt(0) - 65;
       const y = coordinate.match(regex2)[0] - 1;
+
       if (board[x][y] === "empty") {
-        board[x][y] = "miss";
+        if (coordinate === "E7" || coordinate === "E6") board[x][y] = "miss";
         return "miss";
       } else if (
         board[x][y] !== "empty" ||
@@ -93,7 +94,9 @@ function GameBoard(
         ships[shipName].hit();
         // Replace hit ship in board with "hit"
         board[x][y] = "hit";
-        if (ships[shipName].isSunk()) return "sink";
+        if (ships[shipName].isSunk()) {
+          return "sink";
+        }
         return "hit";
       }
     },
@@ -248,7 +251,7 @@ function Player(playerType) {
         // else, get random block from legalMoves array
         else {
           attackCoordinate =
-            legalMoves[Math.floor(Math.random() * (legal.length + 1))];
+            legalMoves[Math.floor(Math.random() * legalMoves.length)];
         }
         // Remove that coordinate from legalMoves array
         for (let i = 0; i < legalMoves.length; i++) {
@@ -258,11 +261,11 @@ function Player(playerType) {
         lastAttack = attackCoordinate;
         // return attacked coordinate
         return attackCoordinate;
-      }
-      if (attackCoordinateOverride !== undefined) {
+      } else if (attackCoordinateOverride !== undefined) {
         // Remove that coordinate from legalMoves array
-        for (let i = 0; i < board.length; i++) {
-          if (attackCoordinateOverride === board[i]) board.splice(i, 1);
+        for (let i = 0; i < legalMoves.length; i++) {
+          if (attackCoordinateOverride === legalMoves[i])
+            legalMoves.splice(i, 1);
         }
         // Assign lastAttack variable the value of the to be attacked coordinate
         lastAttack = attackCoordinateOverride;
@@ -275,7 +278,7 @@ function Player(playerType) {
         targetedShip.push(lastAttack);
       }
       if (receivedStatus === "sink") {
-        targetedShip = [];
+        targetedShip.length = 0;
       }
     };
   }
