@@ -11,7 +11,7 @@ function shipTestFixture(length, hits) {
 // Ship Methods to be tested (related to object public interface)
 // hit() method: Outgoing command method (called from outside the object to change the state of the object)
 // isSunk() method: incoming query method (called from outside the object to return and receive information on the state of the object)
-test.skip("test a hit on a long ship that should not sink", () => {
+test("test a hit on a long ship that should not sink", () => {
   // Define testing variables
   const length = 3;
   const hits = 1;
@@ -21,7 +21,7 @@ test.skip("test a hit on a long ship that should not sink", () => {
   expect(shipInstance.isSunk()).toBe(false);
 });
 
-test.skip("test several hits on a long ship that should sink", () => {
+test("test several hits on a long ship that should sink", () => {
   // Define testing variables
   const length = 3;
   const hits = 3;
@@ -66,7 +66,7 @@ function gameBoardFixture(
   return gameBoardInstance;
 }
 
-test.skip("hit some battle ships on the board, which should not end the game", () => {
+test("hit some battle ships on the board, which should not end the game", () => {
   // Define testing variables
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
   const battleshipCoordinates = ["B4", "B5", "B6", "B7"];
@@ -87,7 +87,7 @@ test.skip("hit some battle ships on the board, which should not end the game", (
   expect(gameBoardInstance.areShipsSunk()).toBe(false);
 });
 
-test.skip("hit all battle ships on the board, which should end the game", () => {
+test("hit all battle ships on the board, which should end the game", () => {
   // Define testing variables
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
   const battleshipCoordinates = ["B4", "B5", "B6", "B7"];
@@ -120,7 +120,7 @@ test.skip("hit all battle ships on the board, which should end the game", () => 
 // I CAN USE THE PREVIOUSLY MADE GAMEBOARD FIXTURE FOR MY UPCOMING PLAYER TESTS, AND SEND IT AN ARGUMENT OF
 // .. 0.
 
-test.skip("player correctly hits ship", () => {
+test("player correctly hits ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -131,7 +131,7 @@ test.skip("player correctly hits ship", () => {
   expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("hit");
 });
 
-test.skip("player sinks ship", () => {
+test("player sinks ship", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -148,7 +148,7 @@ test.skip("player sinks ship", () => {
   }
 });
 
-test.skip("player misses", () => {
+test("player misses", () => {
   // Define testing variables
   const playerInstance = Player("human");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -199,7 +199,7 @@ test("AI makes legal moves", () => {
   expect(result === "miss" || result === "sink");
 });
 
-test.skip("AI prioritizes attacking blocks adjacent to successful hits", () => {
+test("AI prioritizes attacking blocks adjacent to successful hits", () => {
   // Define testing variables
   const computer = Player("computer");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -215,7 +215,7 @@ test.skip("AI prioritizes attacking blocks adjacent to successful hits", () => {
   );
 });
 
-test.skip("AI prioritizes attacking blocks in a line after two successful hits", () => {
+test("AI prioritizes attacking blocks in a line after two successful hits", () => {
   // Define testing variables
   const computer = Player("computer");
   const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
@@ -252,7 +252,7 @@ test("AI misses once after two consecutive hits, then pivots to attack towards o
   expect(attack).toBe("H9");
 });
 
-test.skip("player turn updates", () => {
+test("player turn updates", () => {
   // Define testing variables
   const human = Player("human");
   const computer = Player("computer");

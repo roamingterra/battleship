@@ -47,7 +47,7 @@ function GameBoard(
     for (let j = 0; j < shipCoordinates[i].length; j++) {
       // Use regex to extract x and y coordinates and ship name
       const regex1 = /[A-J]/i;
-      const regex2 = /[1-9]|10/;
+      const regex2 = /[1-9]\d*/;
       // Convert x coordinate to an ascii number and convert that to a number from 0 to 9
       // Convert y coordinate to a number from 0 to 9
       const xCoordinate =
@@ -153,14 +153,6 @@ function Player(playerType) {
   // 2. AI should record all previous hits, and only produce a coordinate to attack based on the
   // .. remaining spaces
   // 3. AI should prioritize attacking spaces adjacent to successful hits
-  // NOTE: The AI will maintain a list of legal moves. When a move is made, it is subsequently removed
-  // .. from the list of legal moves. If a successful move is made, it should randomly select an adjacent
-  // .. move based on a 2D array representing the board that it will have access to. While this is
-  // .. happening, it will maintain a list of hit spaces for the currently targeted ship. When a hit is
-  // .. made, it will check to see if the ship has sunk. If not, it will add the previously hit
-  // .. space to the targetedShip array. Once there are two spaces in the targetedShip array, and the
-  // .. ship is still not sunk, the AI will prioritize attacking spaces in one direction. Once the ship
-  // .. is confirmed to be destroyed, the targetedShip array will be emptied.
   if (playerType === "computer") {
     attack = function (attackCoordinateOverride) {
       if (attackCoordinateOverride === undefined) {
@@ -169,7 +161,7 @@ function Player(playerType) {
         if (targetedShip.length === 1) {
           const possibleMoves = [];
           const regex1 = /[A-J]/i;
-          const regex2 = /[1-9]|10/;
+          const regex2 = /[1-9]\d*/;
           const x = targetedShip[0].match(regex1)[0].charCodeAt(0) - 65;
           const y = targetedShip[0].match(regex2)[0] - 1;
 
@@ -203,15 +195,15 @@ function Player(playerType) {
         // .. targetedShip array
         else if (targetedShip.length > 1) {
           const regex1 = /[A-J]/i;
-          const regex2 = /[1-9]|10/;
+          const regex2 = /[1-9]\d*/;
           // Record all targeted ship coordinates in array form
           const xCoordinates = [];
           const yCoordinates = [];
           for (let i = 0; i < targetedShip.length; i++) {
             xCoordinates.push(
-              targetedShip[0].match(regex1)[0].charCodeAt(0) - 65
+              targetedShip[i].match(regex1)[0].charCodeAt(0) - 65
             );
-            yCoordinates.push(targetedShip[0].match(regex2)[0] - 1);
+            yCoordinates.push(targetedShip[i].match(regex2)[0] - 1);
           }
           // Establish line of attack
           const allEqual = (arr) => arr.every((v) => v === arr[0]);
@@ -231,6 +223,7 @@ function Player(playerType) {
             }
           }
           // Remove possible adjacent move if not possible
+          const impossibleMoves = [];
           for (let i = 0; i < possibleMoves.length; i++) {
             if (possibleMoves[i] === undefined) possibleMoves.splice(i, 1);
             let isLegal = false;
@@ -240,13 +233,20 @@ function Player(playerType) {
                 break legalMoveCheck;
               }
             }
-            if (isLegal === false) possibleMoves.splice(i, 1);
+            if (isLegal === false) {
+              impossibleMoves.push(possibleMoves[i]);
+            }
+          }
+
+          for (let i = 0; i < possibleMoves.length; i++) {
+            if (impossibleMoves.includes(possibleMoves[i])) {
+              possibleMoves.splice(i, 1);
+              i--;
+            }
           }
           // Choose random move from list of possible moves
           attackCoordinate =
-            possibleMoves[
-              Math.floor(Math.random() * (possibleMoves.length + 1))
-            ];
+            possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
         }
         // else, get random block from legalMoves array
         else {
