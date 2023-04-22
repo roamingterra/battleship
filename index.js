@@ -110,6 +110,31 @@ function GameBoard(
 
 function Player(playerType) {
   let turn = false;
+
+  // AI board access
+  const board = [];
+  for (let i = 0; i < 10; i++) {
+    board[i] = [];
+    for (let j = 0; j < 10; j++) {
+      const x = String.fromCharCode(i + 65);
+      const y = j + 1;
+      const coordinate = x + y;
+      board[i][j] = coordinate;
+    }
+  }
+
+  // AI list of legal moves
+  const legalMoves = [];
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      legalMoves.push(board[i][j]);
+    }
+  }
+
+  // AI triangulation array (successful hits are recorded
+  // until ship is destroyed. Then they are forgotten)
+  const targetedSHip = [];
+
   let attack;
   if (playerType === "human") {
     attack = function (attackCoordinate) {
@@ -129,6 +154,10 @@ function Player(playerType) {
   // .. ship is still not sunk, the AI will prioritize attacking spaces in one direction. Once the ship
   // .. is confirmed to be destroyed, the targetedShip array will be emptied.
   if (playerType === "computer") {
+    attack = function (attackCoordinateOverride) {
+      if (attackCoordinateOverride !== undefined) {
+      }
+    };
   }
   return {
     getTurn: function () {
