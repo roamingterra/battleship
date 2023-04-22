@@ -196,8 +196,10 @@ test("AI makes legal moves", () => {
 
   // Perform test
   const attack = computer.attack();
-  expect(gameBoardInstance.receiveAttack(attack)).toBe("sink") ||
-    expect(gameBoardInstance.receiveAttack(attack)).toBe("miss");
+  expect(
+    gameBoardInstance.receiveAttack(attack) === "sink" ||
+      gameBoardInstance.receiveAttack(attack) === "miss"
+  );
 });
 
 test("AI prioritizes attacking blocks adjacent to successful hits", () => {
@@ -211,10 +213,9 @@ test("AI prioritizes attacking blocks adjacent to successful hits", () => {
     gameBoardInstance.receiveAttack(computer.attack("H9"))
   );
   const attack = computer.attack();
-  expect(attack).toBe("G9") ||
-    expect(attack).toBe("H8") ||
-    expect(attack).toBe("I9") ||
-    expect(attack).toBe("H10");
+  expect(
+    attack === "G9" || attack === "H8" || attack === "I9" || attack === "H10"
+  );
 });
 
 test("AI prioritizes attacking blocks in a line after two successful hits", () => {
@@ -231,7 +232,7 @@ test("AI prioritizes attacking blocks in a line after two successful hits", () =
     gameBoardInstance.receiveAttack(computer.attack("H9"))
   );
   const attack = computer.attack();
-  expect(attack).toBe("F9") || expect(attack).toBe("I9");
+  expect(attack === "F9" || attack === "I9");
 });
 
 test("AI misses once after two consecutive hits, then pivots to attack towards other direction", () => {

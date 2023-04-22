@@ -133,9 +133,14 @@ function Player(playerType) {
 
   // AI triangulation array (successful hits are recorded
   // until ship is destroyed. Then they are forgotten)
-  const targetedSHip = [];
+  const targetedShip = [];
+
+  // AI records attacked coordinate, which will be used if the hit is a success
+  let lastAttack;
 
   let attack;
+  let receiveAttackInfo = undefined;
+
   if (playerType === "human") {
     attack = function (attackCoordinate) {
       return attackCoordinate;
@@ -155,7 +160,75 @@ function Player(playerType) {
   // .. is confirmed to be destroyed, the targetedShip array will be emptied.
   if (playerType === "computer") {
     attack = function (attackCoordinateOverride) {
+      if (attackCoordinateOverride === undefined) {
+        let attackCoordinate;
+        // if targetedShip array length is 1, get a random adjacent coordinate (max 4 choices)
+        if (targetedShip.length === 1) {
+          const possibleMoves = [];
+          const regex1 = /[A-J]/i;
+          const regex2 = /[1-9]|10/;
+          const x = targetedShip[0].match(regex1)[0].charCodeAt(0) - 65;
+          const y = targetedShip[0].match(regex2)[0] - 1;
+
+          // Record all possible adjacent moves
+          possibleMoves.push(board[x + 1][y]);
+          possibleMoves.push(board[x - 1][y]);
+          possibleMoves.push(board[x][y + 1]);
+          possibleMoves.push(board[x][y - 1]);
+
+          // Remove possible adjacent move if not possible
+          for (let i = 0; i < possibleMoves.length; i++) {
+            if (possibleMoves[i] === undefined) possibleMoves.splice(i, 1);
+            let isLegal = false;
+            legalMoveCheck: for (let j = 0; j < legalMoves.length; j++) {
+              if (possibleMoves[i] === legalMoves[j]) {
+                isLegal = true;
+                break legalMoveCheck;
+              }
+            }
+            if (isLegal === false) possibleMoves.splice(i, 1);
+          }
+
+          // Choose random move from list of possible moves
+          attackCoordinate =
+            possibleMoves[
+              Math.floor(Math.random() * (possibleMoves.length + 1))
+            ];
+        }
+        // if targetedShip array is greater than 1, get a coordinate on the same line as those
+        // .. recorded coordinates and is adjacent to either of the recorded coordinates in the
+        // .. targetedShip array
+        // else, get random block from legalMoves array
+        else {
+          attackCoordinate =
+            legalMoves[Math.floor(Math.random() * (legal.length + 1))];
+        }
+        // Remove that coordinate from legalMoves array
+        for (let i = 0; i < legalMoves.length; i++) {
+          if (attackCoordinate === legalMoves[i]) legalMoves.splice(i, 1);
+        }
+        // Assign lastAttack variable the value of the to be attacked coordinate
+        lastAttack = attackCoordinate;
+        // return attacked coordinate
+        return attackCoordinate;
+      }
       if (attackCoordinateOverride !== undefined) {
+        // Remove that coordinate from legalMoves array
+        for (let i = 0; i < board.length; i++) {
+          if (attackCoordinateOverride === board[i]) board.splice(i, 1);
+        }
+        // Assign lastAttack variable the value of the to be attacked coordinate
+        lastAttack = attackCoordinateOverride;
+        // return attacked coordinate
+        return attackCoordinateOverride;
+      }
+    };
+    receiveAttackInfo = function (receivedStatus) {
+      if (receivedStatus === "hit") {
+        targetedShip.push(lastAttack);
+      }
+      if (receivedStatus === "sink") {
+        targetedShip = [];
       }
     };
   }
@@ -167,6 +240,7 @@ function Player(playerType) {
       turn = booleanValue;
     },
     attack: attack,
+    receiveAttackInfo: receiveAttackInfo,
   };
 }
 
