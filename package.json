@@ -2,10 +2,10 @@
   "name": "battleship",
   "version": "1.0.0",
   "description": "Battleship game created using Test Driven Development (TDD)",
-  "main": "index.js",
   "scripts": {
     "test": "jest",
-    "watch": "jest --watch *.js"
+    "watch": "jest --watch *.js",
+    "build": "webpack"
   },
   "author": "Daniel Ballerini",
   "license": "ISC",

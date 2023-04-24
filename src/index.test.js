@@ -1,4 +1,4 @@
-import { Ship, GameBoard, Player } from "./index.js";
+import { Ship, GameBoard, Player } from "./logic.js";
 
 // Ship object test fixture
 function shipTestFixture(length, hits) {
