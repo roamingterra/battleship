@@ -1,0 +1,116 @@
+@font-face {
+  font-family: Roboto;
+  src: url(./Roboto/Roboto-Regular.ttf);
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Roboto";
+  color: white;
+  background-color: black;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+}
+
+#header {
+  display: flex;
+  justify-content: center;
+  height: 115px;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+#game-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 540px;
+  flex-wrap: wrap;
+}
+
+#player-wrapper {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  min-width: 525px;
+}
+
+#player-1-ships {
+  display: flex;
+  flex-direction: column;
+  padding-top: 22px;
+  padding-right: 10px;
+}
+
+#player-2-ships {
+  display: flex;
+  flex-direction: column;
+  padding-top: 22px;
+  padding-left: 10px;
+  order: 2;
+}
+
+.ship {
+  display: flex;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 10px;
+}
+
+.life-block {
+  width: 10px;
+  height: 10px;
+  background-color: #2dd4bf;
+}
+
+#player-1-board {
+  display: grid;
+  grid-template-columns: repeat(11, 28px);
+  grid-template-rows: repeat(12, 28px);
+}
+
+#player-2-board {
+  display: grid;
+  grid-template-columns: repeat(11, 28px);
+  grid-template-rows: repeat(12, 28px);
+  order: 1;
+}
+
+.column-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.row-number {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.block {
+  border: solid #b5f7ea;
+}
+
+#footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* For switching the order of player 2 board and player 2 ships when wrapping */
+@media screen and (max-width: 1049px) {
+  #player-2-ships {
+    order: 1;
+  }
+  #player-2-board {
+    order: 2;
+  }
+}
