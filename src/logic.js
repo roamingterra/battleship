@@ -1,5 +1,3 @@
-import { MultiStats } from "webpack";
-
 function Ship(length, name) {
   let hitsTaken = 0;
   return {
