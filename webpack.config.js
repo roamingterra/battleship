@@ -1,7 +1,9 @@
 const path = require("path");
 
 module.exports = {
+  mode: "development",
   entry: "./src/index.js",
+  devtool: "inline-source-map",
   output: {
     filename: "main.js",
     path: path.resolve(__dirname, "dist"),
@@ -17,5 +19,8 @@ module.exports = {
         type: "asset/resource",
       },
     ],
+  },
+  resolve: {
+    fallback: { process: require.resolve("process/browser") },
   },
 };
