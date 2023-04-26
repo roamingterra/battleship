@@ -128,7 +128,9 @@ test("player correctly hits ship", () => {
   const playerAttack = playerInstance.attack("F9");
 
   // Perform test
-  expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("hit");
+  const result = gameBoardInstance.receiveAttack(playerAttack);
+  const resultAttackStatus = result[0];
+  expect(resultAttackStatus).toBe("hit");
 });
 
 test("player sinks ship", () => {
@@ -141,7 +143,9 @@ test("player sinks ship", () => {
   for (let i = 0; i < carrierCoordinates.length; i++) {
     const playerAttack = playerInstance.attack(carrierCoordinates[i]);
     if (i === carrierCoordinates.length - 1) {
-      expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("sink");
+      const result = gameBoardInstance.receiveAttack(playerAttack);
+      const resultAttackStatus = result[0];
+      expect(resultAttackStatus).toBe("sink");
       break;
     }
     gameBoardInstance.receiveAttack(playerAttack);
@@ -156,7 +160,9 @@ test("player misses", () => {
   const playerAttack = playerInstance.attack("A1");
 
   // Perform test
-  expect(gameBoardInstance.receiveAttack(playerAttack)).toBe("miss");
+  const result = gameBoardInstance.receiveAttack(playerAttack);
+  const resultAttackStatus = result[0];
+  expect(resultAttackStatus).toBe("miss");
 });
 
 // I can initialize a board with every single space being taken up either hits or misses
@@ -186,9 +192,11 @@ test("AI makes legal moves", () => {
       const y = j + 1;
       const coordinate = x + y;
       if (coordinate !== "E6" && coordinate !== "E7") {
-        computer.receiveAttackInfo(
-          gameBoardInstance.receiveAttack(computer.attack(coordinate))
+        const result = gameBoardInstance.receiveAttack(
+          computer.attack(coordinate)
         );
+        const resultAttackStatus = result[0];
+        computer.receiveAttackInfo(resultAttackStatus);
       }
     }
   }
@@ -196,7 +204,8 @@ test("AI makes legal moves", () => {
   // Perform test
   const attack = computer.attack();
   const result = gameBoardInstance.receiveAttack(attack);
-  expect(result === "miss" || result === "sink");
+  const resultAttackStatus = result[0];
+  expect(resultAttackStatus === "miss" || resultAttackStatus === "sink");
 });
 
 test("AI prioritizes attacking blocks adjacent to successful hits", () => {
@@ -206,9 +215,9 @@ test("AI prioritizes attacking blocks adjacent to successful hits", () => {
   const gameBoardInstance = gameBoardFixture(carrierCoordinates);
 
   // Perform test
-  computer.receiveAttackInfo(
-    gameBoardInstance.receiveAttack(computer.attack("H9"))
-  );
+  const result = gameBoardInstance.receiveAttack(computer.attack("H9"));
+  const resultAttackStatus = result[0];
+  computer.receiveAttackInfo(resultAttackStatus);
   const attack = computer.attack();
   expect(
     attack === "G9" || attack === "H8" || attack === "I9" || attack === "H10"
@@ -222,12 +231,12 @@ test("AI prioritizes attacking blocks in a line after two successful hits", () =
   const gameBoardInstance = gameBoardFixture(carrierCoordinates);
 
   // Perform test
-  computer.receiveAttackInfo(
-    gameBoardInstance.receiveAttack(computer.attack("G9"))
-  );
-  computer.receiveAttackInfo(
-    gameBoardInstance.receiveAttack(computer.attack("H9"))
-  );
+  const result1 = gameBoardInstance.receiveAttack(computer.attack("G9"));
+  const resultAttackStatus1 = result1[0];
+  computer.receiveAttackInfo(resultAttackStatus1);
+  const result2 = gameBoardInstance.receiveAttack(computer.attack("H9"));
+  const resultAttackStatus2 = result2[0];
+  computer.receiveAttackInfo(resultAttackStatus2);
   const attack = computer.attack();
   expect(attack === "F9" || attack === "I9");
 });
@@ -239,15 +248,18 @@ test("AI misses once after two consecutive hits, then pivots to attack towards o
   const gameBoardInstance = gameBoardFixture(carrierCoordinates);
 
   // Perform test
-  computer.receiveAttackInfo(
-    gameBoardInstance.receiveAttack(computer.attack("G9"))
-  );
-  computer.receiveAttackInfo(
-    gameBoardInstance.receiveAttack(computer.attack("F9"))
-  );
-  computer.receiveAttackInfo(
-    gameBoardInstance.receiveAttack(computer.attack("E9"))
-  );
+  const result1 = gameBoardInstance.receiveAttack(computer.attack("G9"));
+  const resultAttackStatus1 = result1[0];
+  computer.receiveAttackInfo(resultAttackStatus1);
+
+  const result2 = gameBoardInstance.receiveAttack(computer.attack("F9"));
+  const resultAttackStatus2 = result2[0];
+  computer.receiveAttackInfo(resultAttackStatus2);
+
+  const result3 = gameBoardInstance.receiveAttack(computer.attack("E9"));
+  const resultAttackStatus3 = result3[0];
+  computer.receiveAttackInfo(resultAttackStatus3);
+
   const attack = computer.attack();
   expect(attack).toBe("H9");
 });

@@ -73,6 +73,8 @@ function GameBoard(
 
   return {
     receiveAttack: function (coordinate) {
+      // Initialize array to contain return values (attack status and hit ship)
+      const result = [];
       // Convert x and y coordinates to numbers for board array
       const regex1 = /[A-J]/i;
       const regex2 = /[1-9]\d*/;
@@ -80,8 +82,10 @@ function GameBoard(
       const y = coordinate.match(regex2)[0] - 1;
 
       if (board[x][y] === "empty") {
-        if (coordinate === "E7" || coordinate === "E6") board[x][y] = "miss";
-        return "miss";
+        board[x][y] = "miss";
+        result.push("miss");
+        result.push(null);
+        return result;
       } else if (
         board[x][y] !== "empty" ||
         board[x][y] !== "miss" ||
@@ -93,9 +97,13 @@ function GameBoard(
         // Replace hit ship in board with "hit"
         board[x][y] = "hit";
         if (ships[shipName].isSunk()) {
-          return "sink";
+          result.push("sink");
+          result.push(shipName);
+          return result;
         }
-        return "hit";
+        result.push("hit");
+        result.push(shipName);
+        return result;
       }
     },
     areShipsSunk: function () {
