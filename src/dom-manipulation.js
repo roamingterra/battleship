@@ -1,6 +1,3 @@
-const missMarker = require("./images/miss-marker.jpeg");
-const hitMarker = require("./images/hit-marker.jpeg");
-
 function gameBuilder() {
   // Declare elements
   const body = document.querySelector("body");
@@ -1038,15 +1035,24 @@ function gameBuilder() {
 }
 
 function displayMiss(targetedBlock) {
-  targetedBlock.style.backgroundImage = missMarker;
+  targetedBlock.style.backgroundColor = "#b5f7ea";
+}
+
+function displayHit(targetedBlock) {
+  targetedBlock.style.backgroundColor = "red";
 }
 
 function removeShipLifeBlock(ship) {
   for (let i = 0; i < ship.children.length; i++) {
-    if (ship.children[i].style.backgroundColor === "#2dd4bf") {
-      ship.children[i].style.backgroundColor = "#fecaca";
+    if (
+      getComputedStyle(ship.children[i]).backgroundColor ===
+        "rgb(45, 212, 191)" ||
+      ship.children[i].style.background === "rgb(45, 212, 191)"
+    ) {
+      ship.children[i].style.backgroundColor = "red";
+      return;
     }
   }
 }
 
-export { gameBuilder, displayMiss, removeShipLifeBlock };
+export { gameBuilder, displayMiss, displayHit, removeShipLifeBlock };
