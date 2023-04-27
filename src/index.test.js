@@ -1,11 +1,11 @@
-import { Ship, GameBoard, Player, attackBlock } from "./logic.js";
+import { Ship, GameBoard, Player } from "./logic.js";
 import {
   displayMiss,
   displayHit,
   removeShipLifeBlock,
 } from "./dom-manipulation";
-import { missMarker } from "./images/miss-marker.jpeg";
-import { hitMarker } from "./images/hit-marker.jpeg";
+const missMarker = require("./images/miss-marker.jpeg");
+const hitMarker = require("./images/hit-marker.jpeg");
 
 // Ship object test fixture
 function shipTestFixture(length, hits) {
@@ -335,6 +335,3 @@ test("Change ship life block's color when ship is hit", () => {
   removeShipLifeBlock(mockCarrierShip);
   expect(mockCarrierShip.children[3].style.backgroundColor).toBe("#fecaca");
 });
-
-// Test that the game can be won (This test aims to test a dom-manipulation function that dismantles
-// the dom, and builds the winner screen)
