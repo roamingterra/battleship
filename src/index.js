@@ -17,7 +17,8 @@ gameBuilder();
 
 // Event listener to expect a click on the enemy board
 // {
-// FUNCTION: Attack clicked space. check if the location hit is an enemy ship or not. The returned result
+
+// FUNCTION: Attack block. check if the location hit is an enemy ship or not. The returned result
 // should either be a "miss", or an array containing "hit", and type of ship hit. The returned result
 // should be stored in a variable for use by the subsequent dom-manipulation function.
 // NOTE: the receiveAttack() board method returns either hit or miss, but it needs to also return what type
@@ -25,8 +26,11 @@ gameBuilder();
 // method is returning into an array containing the result of the attack, and the type of ship hit. This
 // would mean I will have to update the logic to access the first element of a returned array, rather than
 // just a returned string
+
+// THESE FUNCTIONS ARE CALLED DEPENDING ON THE RETURNED RESULT OF THE receiveAttack() method
 // FUNCTION (DOM MANIPULATION): Make appropriate life block red if that ship was indeed hit
 // FUNCTION (DOM MANIPULATION): Place X marker or dot marker on hit space, depending on whether hit or not
+
 // FUNCTION: Check for winner.
 // NOTE: Check for who's turn it is, then check enemy board .areShipsSunk() method. Player that won should
 // be returned for use of subsequent dom-manipulation function
@@ -61,3 +65,7 @@ gameBuilder();
 // GAME. NOW I CAN DEVELOP TESTS FOR THEM BEFORE I FLESH THEM OUT. DON'T FORGET: I WILL
 // BE PERFORMING UNIT TESTS, NOT INTEGRATION TESTS. THIS MEANS I AM TESTING INDIVIDUAL
 // FUNCTIONS, AND NOT THE ENTIRETY OF THE GAME LOOP.
+
+// FINAL FINAL ADENDUM:
+// THE INSTRUCTIONS EXPLICITLY SAY TO MAKE A MAIN GAME LOOP THAT RUNS USING ONLY OBJECT
+// METHODS. DO NOT CREATE ADDITIONAL LOGIC FUNCTIONS, ONLY DOM MANIPULATION FUNCTIONS.

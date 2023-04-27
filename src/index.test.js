@@ -1,4 +1,11 @@
-import { Ship, GameBoard, Player } from "./logic.js";
+import { Ship, GameBoard, Player, attackBlock } from "./logic.js";
+import {
+  displayMiss,
+  displayHit,
+  removeShipLifeBlock,
+} from "./dom-manipulation";
+import { missMarker } from "./images/miss-marker.jpeg";
+import { hitMarker } from "./images/hit-marker.jpeg";
 
 // Ship object test fixture
 function shipTestFixture(length, hits) {
@@ -282,3 +289,52 @@ test("player turn updates", () => {
   expect(human.getTurn()).toBe(false);
   expect(computer.getTurn()).toBe(true);
 });
+
+// Main game loop and dom manipulation tests
+
+// Test that when a player hits an empty block, a marker is placed on the block *
+test("Dot marker is placed on empty block", () => {
+  // Define testing variables
+  const mockTarget = {
+    style: {
+      backgroundImage: null,
+    },
+  };
+
+  // Perform test
+  displayMiss(mockTarget);
+  expect(mockTarget.style.backgroundColor).toBe(missMarker);
+});
+// Test that when a player hits a ship block, a marker is placed on the block *
+test("X marker is placed on ship block", () => {
+  // Define testing variables
+  const mockTarget = {
+    style: {
+      backgroundImage: null,
+    },
+  };
+
+  // Perform test
+  displayHit(mockTarget);
+  expect(mockTarget.style.backgroundColor).toBe(hitMarker);
+});
+// Test that when a player hits a ship, the appropriate life block’s color changes *
+test("Change ship life block's color when ship is hit", () => {
+  // Define testing variables
+  const mockCarrierShip = {
+    children: [
+      { style: { backgroundColor: "#fecaca" } },
+      { style: { backgroundColor: "#fecaca" } },
+      { style: { backgroundColor: "#2dd4bf" } },
+      { style: { backgroundColor: "#2dd4bf" } },
+      { style: { backgroundColor: "#2dd4bf" } },
+    ],
+  };
+
+  // Perform test
+  removeShipLifeBlock(mockCarrierShip);
+  expect(mockCarrierShip.children[3].style.backgroundColor).toBe("#fecaca");
+});
+
+// Test that the game can be won (This test aims to test a dom-manipulation function that dismantles
+// the dom, and builds the winner screen)
