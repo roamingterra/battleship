@@ -1,3 +1,6 @@
+const missMarker = require("./images/miss-marker.jpeg");
+const hitMarker = require("./images/hit-marker.jpeg");
+
 function gameBuilder() {
   // Declare elements
   const body = document.querySelector("body");
@@ -1034,4 +1037,16 @@ function gameBuilder() {
   creditsLine2.appendChild(creditsLine2Txt);
 }
 
-export { gameBuilder };
+function displayMiss(targetedBlock) {
+  targetedBlock.style.backgroundImage = missMarker;
+}
+
+function removeShipLifeBlock(ship) {
+  for (let i = 0; i < ship.children.length; i++) {
+    if (ship.children[i].style.backgroundColor === "#2dd4bf") {
+      ship.children[i].style.backgroundColor = "#fecaca";
+    }
+  }
+}
+
+export { gameBuilder, displayMiss, removeShipLifeBlock };

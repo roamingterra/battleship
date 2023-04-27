@@ -1,8 +1,14 @@
 import { Ship, GameBoard, Player } from "./logic.js";
-import { gameBuilder } from "./dom-manipulation";
+import { gameBuilder, displayMiss } from "./dom-manipulation";
 import "./style.css";
+// const missMarker = require("./images/miss-marker.jpeg");
+// const hitMarker = require("./images/hit-marker.jpeg");
 
 gameBuilder();
+
+const blockA1Player1 = document.querySelector("#player-1-board > .A1");
+console.log(blockA1Player1);
+displayMiss(blockA1Player1);
 
 // WHAT TO DO:
 // Start writing out pseudocode for the functions I would need.
