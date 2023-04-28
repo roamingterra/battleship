@@ -4,20 +4,11 @@ import {
   displayMiss,
   displayHit,
   removeShipLifeBlock,
+  hideNonActivePlayerBoard,
 } from "./dom-manipulation";
 import "./style.css";
 
 gameBuilder();
-
-const blockA1Player1 = document.querySelector("#player-1-board > .A1");
-displayMiss(blockA1Player1);
-
-const blockA2Player1 = document.querySelector("#player-1-board > .A2");
-displayHit(blockA2Player1);
-
-const carrierLifeBlocks = document.querySelector(".carrier");
-removeShipLifeBlock(carrierLifeBlocks);
-removeShipLifeBlock(carrierLifeBlocks);
 
 // WHAT TO DO:
 // Start writing out pseudocode for the functions I would need.
@@ -27,8 +18,26 @@ removeShipLifeBlock(carrierLifeBlocks);
 
 // Initialize human player and computer player. Make human player start first with the
 // setTurn() methods
+const human = Player("human");
+human.setTurn(true);
+const computer = Player("computer");
+computer.setTurn(false);
 // Initialize human board and computer board (with predetermined ship positioning for now)
+const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
+const battleshipCoordinates = ["B4", "B5", "B6", "B7"];
+const cruiserCoordinates = ["H3", "H4", "H5"];
+const submarineCoordinates = ["E2", "E3", "E4"];
+const patrolBoatCoordinates = ["D6", "E6"];
+
+const humanGameBoard = GameBoard(
+  carrierCoordinates,
+  battleshipCoordinates,
+  cruiserCoordinates,
+  submarineCoordinates,
+  patrolBoatCoordinates
+);
 // FUNCTION (DOM MANIPULATION): Blur board opposite player
+hideNonActivePlayerBoard(human.getTurn(), computer.getTurn());
 
 // Event listener to expect a click on the enemy board
 // {

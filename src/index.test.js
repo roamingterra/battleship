@@ -1,9 +1,4 @@
 import { Ship, GameBoard, Player } from "./logic.js";
-import {
-  displayMiss,
-  displayHit,
-  removeShipLifeBlock,
-} from "./dom-manipulation";
 
 // Ship object test fixture
 function shipTestFixture(length, hits) {

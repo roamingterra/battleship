@@ -36,25 +36,41 @@ h1 {
 }
 
 #player-wrapper {
+  position: relative;
   display: flex;
   flex-grow: 1;
   justify-content: center;
   min-width: 525px;
+  z-index: 1;
+}
+
+#overlay-1,
+#overlay-2 {
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 #player-1-ships {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding-top: 22px;
   padding-right: 10px;
+  z-index: 3;
 }
 
 #player-2-ships {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding-top: 22px;
   padding-left: 10px;
   order: 2;
+  z-index: 3;
 }
 
 .ship {
@@ -71,16 +87,20 @@ h1 {
 }
 
 #player-1-board {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(11, 28px);
   grid-template-rows: repeat(12, 28px);
+  z-index: 1;
 }
 
 #player-2-board {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(11, 28px);
   grid-template-rows: repeat(12, 28px);
   order: 1;
+  z-index: 1;
 }
 
 .column-number {

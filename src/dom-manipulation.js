@@ -8,6 +8,7 @@ function gameBuilder() {
   const gameSection = document.createElement("div");
 
   const playerWrapper1 = document.createElement("div");
+  const overlay1 = document.createElement("div");
   const player1Ships = document.createElement("div");
   const carrier1 = document.createElement("div");
   const carrier1LifeBlock1 = document.createElement("div");
@@ -176,6 +177,7 @@ function gameBuilder() {
   const blockJ10Player1 = document.createElement("div");
 
   const playerWrapper2 = document.createElement("div");
+  const overlay2 = document.createElement("div");
   const player2Board = document.createElement("div");
   const emptySpace2 = document.createElement("div");
   const columnNumberAPlayer2 = document.createElement("div");
@@ -358,6 +360,7 @@ function gameBuilder() {
   header.setAttribute("id", "header");
   gameSection.setAttribute("id", "game-section");
   playerWrapper1.setAttribute("id", "player-wrapper");
+  overlay1.setAttribute("id", "overlay-1");
 
   player1Ships.setAttribute("id", "player-1-ships");
   carrier1.classList.add("carrier", "ship");
@@ -507,6 +510,7 @@ function gameBuilder() {
   blockJ10Player1.classList.add("block", "J10");
 
   playerWrapper2.setAttribute("id", "player-wrapper");
+  overlay2.setAttribute("id", "overlay-2");
   player2Board.setAttribute("id", "player-2-board");
   emptySpace2.classList.add("empty-space");
   columnNumberAPlayer2.classList.add("column-number");
@@ -693,6 +697,7 @@ function gameBuilder() {
   patrolBoat1.appendChild(patrolBoat1LifeBlock2);
 
   playerWrapper1.appendChild(player1Board);
+  playerWrapper1.appendChild(overlay1);
   player1Board.appendChild(emptySpace1);
   player1Board.appendChild(columnNumberAPlayer1);
   columnNumberAPlayer1.appendChild(columnNumberAPlayer1Txt);
@@ -847,6 +852,7 @@ function gameBuilder() {
 
   gameSection.appendChild(playerWrapper2);
   playerWrapper2.appendChild(player2Board);
+  playerWrapper2.appendChild(overlay2);
   player2Board.appendChild(emptySpace2);
   player2Board.appendChild(columnNumberAPlayer2);
   columnNumberAPlayer2.appendChild(columnNumberAPlayer2Txt);
@@ -1055,4 +1061,22 @@ function removeShipLifeBlock(ship) {
   }
 }
 
-export { gameBuilder, displayMiss, displayHit, removeShipLifeBlock };
+function hideNonActivePlayerBoard(humanTurn, computerTurn) {
+  const overlay1 = document.querySelector("#overlay-1");
+  const overlay2 = document.querySelector("#overlay-2");
+  if (humanTurn === true && computerTurn === false) {
+    overlay1.style.display = "block";
+    overlay2.style.display = "none";
+  } else if (humanTurn === false && computerTurn === true) {
+    overlay1.style.display = "none";
+    overlay2.style.display = "block";
+  }
+}
+
+export {
+  gameBuilder,
+  displayMiss,
+  displayHit,
+  removeShipLifeBlock,
+  hideNonActivePlayerBoard,
+};
