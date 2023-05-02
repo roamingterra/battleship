@@ -382,7 +382,7 @@ function gameBuilder() {
   submarine1LifeBlock1.classList.add("life-block");
   submarine1LifeBlock2.classList.add("life-block");
   submarine1LifeBlock3.classList.add("life-block");
-  patrolBoat1.classList.add("patrol-boat", "ship");
+  patrolBoat1.classList.add("patrolBoat", "ship");
   patrolBoat1LifeBlock1.classList.add("life-block");
   patrolBoat1LifeBlock2.classList.add("life-block");
 
@@ -654,7 +654,7 @@ function gameBuilder() {
   submarine2LifeBlock1.classList.add("life-block");
   submarine2LifeBlock2.classList.add("life-block");
   submarine2LifeBlock3.classList.add("life-block");
-  patrolBoat2.classList.add("patrol-boat", "ship");
+  patrolBoat2.classList.add("patrolBoat", "ship");
   patrolBoat2LifeBlock1.classList.add("life-block");
   patrolBoat2LifeBlock2.classList.add("life-block");
 
@@ -1039,6 +1039,23 @@ function gameBuilder() {
   footer.appendChild(creditsLine2);
   creditsLine2.appendChild(creditsLine2Txt);
 }
+function displayPlayerShips(
+  carrierCoordinates,
+  battleshipCoordinates,
+  cruiserCoordinates,
+  submarineCoordinates,
+  patrolBoatCoordinates
+) {
+  for (let i = 0; i < arguments.length; i++) {
+    for (let j = 0; j < arguments[i].length; j++) {
+      const coordinate = arguments[i][j];
+      const shipBlock = document.querySelector(
+        `#player-1-board > .${coordinate}`
+      );
+      shipBlock.style.backgroundColor = "#021691";
+    }
+  }
+}
 
 function displayMiss(targetedBlock) {
   targetedBlock.style.backgroundColor = "#b5f7ea";
@@ -1075,6 +1092,7 @@ function hideNonActivePlayerBoard(humanTurn, computerTurn) {
 
 export {
   gameBuilder,
+  displayPlayerShips,
   displayMiss,
   displayHit,
   removeShipLifeBlock,

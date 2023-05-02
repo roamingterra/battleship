@@ -86,24 +86,23 @@ function GameBoard(
         result.push("miss");
         result.push(null);
         return result;
-      } else if (
-        board[x][y] !== "empty" ||
-        board[x][y] !== "miss" ||
-        board[x][y] !== "hit"
-      ) {
+      } else if (board[x][y] !== "miss" && board[x][y] !== "hit") {
         // Execute attack on ship
         const shipName = board[x][y];
-        ships[shipName].hit();
-        // Replace hit ship in board with "hit"
-        board[x][y] = "hit";
-        if (ships[shipName].isSunk()) {
-          result.push("sink");
+        if (coordinate === undefined) {
+        } else {
+          ships[shipName].hit();
+          // Replace hit ship in board with "hit"
+          board[x][y] = "hit";
+          if (ships[shipName].isSunk()) {
+            result.push("sink");
+            result.push(shipName);
+            return result;
+          }
+          result.push("hit");
           result.push(shipName);
           return result;
         }
-        result.push("hit");
-        result.push(shipName);
-        return result;
       }
     },
     areShipsSunk: function () {
@@ -172,10 +171,14 @@ function Player(playerType) {
           const y = targetedShip[0].match(regex2)[0] - 1;
 
           // Record all possible adjacent moves
-          possibleMoves.push(board[x + 1][y]);
-          possibleMoves.push(board[x - 1][y]);
-          possibleMoves.push(board[x][y + 1]);
-          possibleMoves.push(board[x][y - 1]);
+          if (board[x + 1] !== undefined && board[x + 1][y] !== undefined)
+            possibleMoves.push(board[x + 1][y]);
+          if (board[x - 1] !== undefined && board[x - 1][y] !== undefined)
+            possibleMoves.push(board[x - 1][y]);
+          if (board[x] !== undefined && board[x][y + 1] !== undefined)
+            possibleMoves.push(board[x][y + 1]);
+          if (board[x] !== undefined && board[x][y - 1] !== undefined)
+            possibleMoves.push(board[x][y - 1]);
 
           // Remove possible adjacent move if not possible
           for (let i = 0; i < possibleMoves.length; i++) {
@@ -187,7 +190,10 @@ function Player(playerType) {
                 break legalMoveCheck;
               }
             }
-            if (isLegal === false) possibleMoves.splice(i, 1);
+            if (isLegal === false) {
+              possibleMoves.splice(i, 1);
+              i--;
+            }
           }
 
           // Choose random move from list of possible moves
@@ -224,8 +230,10 @@ function Player(playerType) {
               possibleMoves.push(board[x][y + 1]);
               possibleMoves.push(board[x][y - 1]);
             } else if (yCoordinatesAllEqual) {
-              possibleMoves.push(board[x + 1][y]);
-              possibleMoves.push(board[x - 1][y]);
+              if (board[x + 1] !== undefined && board[x + 1][y] !== undefined)
+                possibleMoves.push(board[x + 1][y]);
+              if (board[x - 1] !== undefined && board[x - 1][y])
+                possibleMoves.push(board[x - 1][y]);
             }
           }
           // Remove possible adjacent move if not possible
@@ -261,7 +269,9 @@ function Player(playerType) {
         }
         // Remove that coordinate from legalMoves array
         for (let i = 0; i < legalMoves.length; i++) {
-          if (attackCoordinate === legalMoves[i]) legalMoves.splice(i, 1);
+          if (attackCoordinate === legalMoves[i]) {
+            legalMoves.splice(i, 1);
+          }
         }
         // Assign lastAttack variable the value of the to be attacked coordinate
         lastAttack = attackCoordinate;
@@ -300,4 +310,11 @@ function Player(playerType) {
   };
 }
 
-export { Ship, GameBoard, Player };
+async function waitForPlayerAttack(event) {
+  const attack = await event.target.classList[1];
+  return new Promise((resolve) => {
+    resolve(attack);
+  });
+}
+
+export { Ship, GameBoard, Player, waitForPlayerAttack };
