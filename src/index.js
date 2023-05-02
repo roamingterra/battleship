@@ -6,6 +6,7 @@ import {
   displayHit,
   removeShipLifeBlock,
   hideNonActivePlayerBoard,
+  displayWinner,
 } from "./dom-manipulation";
 import "./style.css";
 
@@ -114,6 +115,7 @@ async function gameLoop() {
     }
 
     if (computerGameBoard.areShipsSunk()) {
+      displayWinner("player 1 wins");
       return; // Escape game loop
     }
 
@@ -154,6 +156,7 @@ async function gameLoop() {
           }
 
           if (humanGameBoard.areShipsSunk()) {
+            displayWinner("player 2 wins");
             return; // Escape game loop
           }
         }

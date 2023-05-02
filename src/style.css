@@ -15,6 +15,7 @@ body {
 #container {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 #header {
@@ -27,12 +28,21 @@ h1 {
   font-size: 3rem;
 }
 
+#message-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 2rem;
+  height: 100px;
+}
+
 #game-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 540px;
   flex-wrap: wrap;
+  padding-bottom: 100px;
 }
 
 #player-wrapper {
@@ -123,6 +133,7 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 20px;
 }
 
 /* For switching the order of player 2 board and player 2 ships when wrapping */
@@ -132,5 +143,11 @@ h1 {
   }
   #player-2-board {
     order: 2;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  #player-wrapper {
+    min-width: unset;
   }
 }

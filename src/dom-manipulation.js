@@ -5,6 +5,7 @@ function gameBuilder() {
   const header = document.createElement("div");
   const headerHeader = document.createElement("h1");
   const headerTxt = document.createTextNode("Battleship");
+  const messageSection = document.createElement("div");
   const gameSection = document.createElement("div");
 
   const playerWrapper1 = document.createElement("div");
@@ -358,6 +359,7 @@ function gameBuilder() {
   // Add attributes
   container.setAttribute("id", "container");
   header.setAttribute("id", "header");
+  messageSection.setAttribute("id", "message-section");
   gameSection.setAttribute("id", "game-section");
   playerWrapper1.setAttribute("id", "player-wrapper");
   overlay1.setAttribute("id", "overlay-1");
@@ -665,6 +667,7 @@ function gameBuilder() {
   container.appendChild(header);
   header.appendChild(headerHeader);
   headerHeader.appendChild(headerTxt);
+  container.appendChild(messageSection);
   container.appendChild(gameSection);
   gameSection.appendChild(playerWrapper1);
 
@@ -1090,6 +1093,17 @@ function hideNonActivePlayerBoard(humanTurn, computerTurn) {
   }
 }
 
+function displayWinner(gameResult) {
+  const messageSection = document.querySelector("#message-section");
+  let winningMessage = undefined;
+  if (gameResult === "player 1 wins") {
+    winningMessage = document.createTextNode("YOU WIN");
+  } else if (gameResult === "player 2 wins") {
+    winningMessage = document.createTextNode("YOU LOSE");
+  }
+  messageSection.appendChild(winningMessage);
+}
+
 export {
   gameBuilder,
   displayPlayerShips,
@@ -1097,4 +1111,5 @@ export {
   displayHit,
   removeShipLifeBlock,
   hideNonActivePlayerBoard,
+  displayWinner,
 };
