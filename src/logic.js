@@ -310,4 +310,85 @@ function Player(playerType) {
   };
 }
 
-export { Ship, GameBoard, Player };
+function randomizeShipPositions() {
+  const boardSize = 10; // The size of the battleship board
+  const shipSizes = [5, 4, 3, 3, 2]; // The sizes of the ships that need to be placed
+  const board = Array(boardSize)
+    .fill()
+    .map(() => Array(boardSize).fill(null)); // Initialize the board with null values
+  const shipPositions = [];
+  const carrierCoordinates = [];
+  const battleshipCoordinate = [];
+  const cruiserCoordinates = [];
+  const submarineCoordinates = [];
+  const patrolBoatCoordinates = [];
+  shipPositions.push(carrierCoordinates);
+  shipPositions.push(battleshipCoordinate);
+  shipPositions.push(cruiserCoordinates);
+  shipPositions.push(submarineCoordinates);
+  shipPositions.push(patrolBoatCoordinates);
+
+  for (let i = 0; i < shipSizes.length; i++) {
+    let shipSize = shipSizes[i];
+    let orientation = Math.floor(Math.random() * 2); // 0 = horizontal, 1 = vertical
+
+    let row, col;
+    if (orientation === 0) {
+      // horizontal
+      row = Math.floor(Math.random() * boardSize);
+      col = Math.floor(Math.random() * (boardSize - shipSize + 1));
+    } else {
+      // vertical
+      row = Math.floor(Math.random() * (boardSize - shipSize + 1));
+      col = Math.floor(Math.random() * boardSize);
+    }
+
+    // check if the ship fits in the chosen position
+    let validPosition = true;
+    for (let j = 0; j < shipSize; j++) {
+      if (
+        orientation === 0 &&
+        board[row][col + j] !== null // check if there's already a ship in the way
+      ) {
+        validPosition = false;
+        break;
+      } else if (
+        orientation === 1 &&
+        board[row + j][col] !== null // check if there's already a ship in the way
+      ) {
+        validPosition = false;
+        break;
+      }
+    }
+
+    // if the position is valid, place the ship on the board
+    if (validPosition) {
+      for (let j = 0; j < shipSize; j++) {
+        if (orientation === 0) {
+          board[row][col + j] = i;
+        } else {
+          board[row + j][col] = i;
+        }
+      }
+    } else {
+      // if the position is not valid, try again with this ship
+      i--;
+    }
+  }
+
+  // iterate through the board and extract the ship positions
+  for (let i = 0; i < board.length; i++) {
+    for (let j = 0; j < board[i].length; j++) {
+      if (board[i][j] !== null) {
+        const x = String.fromCharCode(i + 65);
+        const y = j + 1;
+        const coordinate = x + y;
+        shipPositions[board[i][j]].push(coordinate);
+      }
+    }
+  }
+
+  return shipPositions;
+}
+
+export { Ship, GameBoard, Player, randomizeShipPositions };

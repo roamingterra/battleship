@@ -1,4 +1,4 @@
-import { GameBoard, Player } from "./logic.js";
+import { GameBoard, Player, randomizeShipPositions } from "./logic.js";
 import {
   gameBuilder,
   displayPlayerShips,
@@ -18,35 +18,45 @@ async function gameLoop() {
   const computer = Player("computer");
   computer.setTurn(false);
 
-  // Initialize human board and computer board (with predetermined ship positioning for now)
-  const carrierCoordinates = ["F9", "G9", "H9", "I9", "J9"];
-  const battleshipCoordinates = ["B4", "B5", "B6", "B7"];
-  const cruiserCoordinates = ["H3", "H4", "H5"];
-  const submarineCoordinates = ["E2", "E3", "E4"];
-  const patrolBoatCoordinates = ["D6", "E6"];
+  // Randomize ship positions for each board
+  const gameBoard1 = randomizeShipPositions();
+  const gameBoard2 = randomizeShipPositions();
+
+  // Initialize human board and computer board
+  const carrierCoordinatesHuman = gameBoard1[0];
+  const battleshipCoordinatesHuman = gameBoard1[1];
+  const cruiserCoordinatesHuman = gameBoard1[2];
+  const submarineCoordinatesHuman = gameBoard1[3];
+  const patrolBoatCoordinatesHuman = gameBoard1[4];
+
+  const carrierCoordinatesComputer = gameBoard2[0];
+  const battleshipCoordinatesComputer = gameBoard2[1];
+  const cruiserCoordinatesComputer = gameBoard2[2];
+  const submarineCoordinatesComputer = gameBoard2[3];
+  const patrolBoatCoordinatesComputer = gameBoard2[4];
 
   const humanGameBoard = GameBoard(
-    carrierCoordinates,
-    battleshipCoordinates,
-    cruiserCoordinates,
-    submarineCoordinates,
-    patrolBoatCoordinates
+    carrierCoordinatesHuman,
+    battleshipCoordinatesHuman,
+    cruiserCoordinatesHuman,
+    submarineCoordinatesHuman,
+    patrolBoatCoordinatesHuman
   );
 
   displayPlayerShips(
-    carrierCoordinates,
-    battleshipCoordinates,
-    cruiserCoordinates,
-    submarineCoordinates,
-    patrolBoatCoordinates
+    carrierCoordinatesHuman,
+    battleshipCoordinatesHuman,
+    cruiserCoordinatesHuman,
+    submarineCoordinatesHuman,
+    patrolBoatCoordinatesHuman
   );
 
   const computerGameBoard = GameBoard(
-    carrierCoordinates,
-    battleshipCoordinates,
-    cruiserCoordinates,
-    submarineCoordinates,
-    patrolBoatCoordinates
+    carrierCoordinatesComputer,
+    battleshipCoordinatesComputer,
+    cruiserCoordinatesComputer,
+    submarineCoordinatesComputer,
+    patrolBoatCoordinatesComputer
   );
 
   // Create array of enemy board blocks with event listeners and return that array
