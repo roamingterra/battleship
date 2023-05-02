@@ -1,4 +1,4 @@
-import { Ship, GameBoard, Player, waitForPlayerAttack } from "./logic.js";
+import { GameBoard, Player } from "./logic.js";
 import {
   gameBuilder,
   displayPlayerShips,
@@ -111,8 +111,8 @@ async function gameLoop() {
     if (computer.getTurn() && !human.getTurn()) {
       let computerPlayAgain = true;
       do {
+        await new Promise((resolve) => setTimeout(resolve, 500)); // add a delay of 1 second
         const computerAttack = computer.attack();
-        // await new Promise((resolve) => setTimeout(resolve, 500)); // add a delay of 1 second
         if (computerAttack) {
           const computerAttackResult =
             humanGameBoard.receiveAttack(computerAttack); // should return hit status and ship hit
@@ -126,6 +126,7 @@ async function gameLoop() {
             human.setTurn(true);
             computer.setTurn(false);
             displayMiss(computerAttackBlock);
+            await new Promise((resolve) => setTimeout(resolve, 500)); // add a delay of 1 second
             hideNonActivePlayerBoard(human.getTurn(), computer.getTurn());
             computerPlayAgain = false;
           }
@@ -145,8 +146,6 @@ async function gameLoop() {
           if (humanGameBoard.areShipsSunk()) {
             return; // Escape game loop
           }
-        } else {
-          console.log("error");
         }
       } while (computerPlayAgain === true);
     }

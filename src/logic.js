@@ -310,11 +310,4 @@ function Player(playerType) {
   };
 }
 
-async function waitForPlayerAttack(event) {
-  const attack = await event.target.classList[1];
-  return new Promise((resolve) => {
-    resolve(attack);
-  });
-}
-
-export { Ship, GameBoard, Player, waitForPlayerAttack };
+export { Ship, GameBoard, Player };
