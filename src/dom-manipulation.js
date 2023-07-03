@@ -353,7 +353,7 @@ function gameBuilder() {
   );
   const creditsLine2 = document.createElement("div");
   const creditsLine2Txt = document.createTextNode(
-    "With the help from © The Odin Project 2022"
+    "Project idea from © Odin Project"
   );
 
   // Add attributes
